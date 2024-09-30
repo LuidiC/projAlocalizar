@@ -11,6 +11,9 @@
         @Autowired
         IUsuarioRepository usuarioRepository;
 
+        public Usuario buscarId(Long id) {
+            return usuarioRepository.findById(id).orElse(null);
+        }
 
         public Usuario salvarUsuario(Usuario usuario) {
             return usuarioRepository.save(usuario);
