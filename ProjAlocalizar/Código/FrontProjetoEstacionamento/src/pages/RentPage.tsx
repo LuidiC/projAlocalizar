@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Box, Button, Typography } from '@mui/material';
 
 interface Vehicle {
@@ -17,7 +16,6 @@ const RentPage: React.FC = () => {
         // const response = await axios.get('http://localhost:8080/api/vehicles');
         // setVehicles(response.data);
 
-        // ex teste
         const exampleVehicles: Vehicle[] = [
           { id: 1, name: 'Honda Civic' },
           { id: 2, name: 'Toyota Corolla' },

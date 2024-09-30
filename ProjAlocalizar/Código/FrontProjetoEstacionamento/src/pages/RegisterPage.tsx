@@ -1,32 +1,48 @@
-import { Box, Button, Input, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
+import axios from "axios"; // Importa axios
+import { SelectChangeEvent } from "@mui/material"; // Importa o tipo correto
 
 export const RegisterPage = () => {
     const [userType, setUserType] = useState("cliente");
-    const [employers, setEmployers] = useState([{ nome: '', rendimento: '' }]);
+    const [formData, setFormData] = useState({
+        nome: "",
+        cpfCnpj: "",
+        senha: "",
+        endereco: "",
+        profissao: "",
+        tipoUsuario: "CLIENTE" // Inicialmente setado para 'CLIENTE'
+    });
 
     const navigate = useNavigate();
 
-    const handleUserTypeChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        setUserType(event.target.value);
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
     };
 
-    const handleAddEmployer = () => {
-        if (employers.length < 3) {
-            setEmployers([...employers, { nome: '', rendimento: '' }]);
+    const handleUserTypeChange = (event: SelectChangeEvent<string>) => {
+        const userType = event.target.value;
+        setUserType(userType);
+        setFormData({
+            ...formData,
+            tipoUsuario: userType.toUpperCase() // Atualiza tipo de usuário
+        });
+    };
+
+    const handleSubmit = async () => {
+        try {
+            // Fazendo a requisição para a API para salvar o usuário
+            const response = await axios.post("http://localhost:8080/api/usuario/novoUsuario", formData);
+            console.log("Usuário cadastrado com sucesso:", response.data);
+            navigate("/login");
+        } catch (error) {
+            console.error("Erro ao cadastrar usuário:", error);
         }
-    };
-
-    const handleEmployerChange = (index: number, field: keyof typeof employers[number], value: string) => {
-        const newEmployers = [...employers];
-        newEmployers[index][field] = value;
-        setEmployers(newEmployers);
-    };
-
-    const handleSubmit = () => {
-        // lógica para enviar dados ao servidor
-        navigate("/login");
     };
 
     return (
@@ -36,11 +52,10 @@ export const RegisterPage = () => {
             justifyContent={"space-between"}
             sx={{ minHeight: '100vh' }}
         >
-           
             <Box
                 sx={{
                     width: '60%',
-                    backgroundColor: '#191970', 
+                    backgroundColor: '#191970',
                     minHeight: '110vh',
                     marginTop: '-100px',
                     marginLeft: '-15%',
@@ -48,7 +63,6 @@ export const RegisterPage = () => {
                     padding: '20px'
                 }}
             >
-                
             </Box>
 
             <Box
@@ -60,14 +74,13 @@ export const RegisterPage = () => {
                     padding: 5,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: '-50px', 
+                    marginTop: '-50px',
                 }}
             >
                 <Typography variant="h4" sx={{ marginBottom: 2 }}>
                     Faça Seu Cadastro
                 </Typography>
 
-              
                 <Select
                     value={userType}
                     onChange={handleUserTypeChange}
@@ -77,41 +90,13 @@ export const RegisterPage = () => {
                     <MenuItem value="empresa">Empresa/Banco</MenuItem>
                 </Select>
 
-                
                 {userType === "cliente" && (
                     <Box display="flex" flexDirection="column" gap={2} width="400px">
-                        <TextField fullWidth label="RG" variant="outlined" />
-                        <TextField fullWidth label="CPF" variant="outlined" />
-                        <TextField fullWidth label="Nome" variant="outlined" />
-                        <TextField fullWidth label="Endereço" variant="outlined" />
-                        <TextField fullWidth label="Profissão" variant="outlined" />
-
-                        
-                        {employers.map((employer, index) => (
-                            <Box key={index} display="flex" flexDirection="column" gap={2}>
-                                <TextField
-                                    fullWidth
-                                    label="Entidade Empregadora"
-                                    value={employer.nome}
-                                    onChange={(e) => handleEmployerChange(index, 'nome', e.target.value)}
-                                    variant="outlined"
-                                />
-                                <TextField
-                                    fullWidth
-                                    label="Rendimento"
-                                    value={employer.rendimento}
-                                    onChange={(e) => handleEmployerChange(index, 'rendimento', e.target.value)}
-                                    variant="outlined"
-                                />
-                            </Box>
-                        ))}
-
-                        
-                        {employers.length < 3 && (
-                            <Button onClick={handleAddEmployer} variant="outlined">
-                                Adicionar Empregador
-                            </Button>
-                        )}
+                        <TextField name="nome" label="Nome" variant="outlined" fullWidth onChange={handleInputChange} />
+                        <TextField name="endereco" label="Endereço" variant="outlined" fullWidth onChange={handleInputChange} />
+                        <TextField name="profissao" label="Profissão" variant="outlined" fullWidth onChange={handleInputChange} />
+                        <TextField name="cpfCnpj" label="CPF" variant="outlined" fullWidth onChange={handleInputChange} />
+                        <TextField name="senha" label="Senha" variant="outlined" fullWidth type="password" onChange={handleInputChange} />
 
                         <Button
                             onClick={handleSubmit}
@@ -121,7 +106,7 @@ export const RegisterPage = () => {
                                 backgroundColor: '#191970',
                                 color: '#fff',
                                 '&:hover': {
-                                    backgroundColor: '#1e1e78', 
+                                    backgroundColor: '#1e1e78',
                                 },
                             }}
                         >
@@ -130,12 +115,11 @@ export const RegisterPage = () => {
                     </Box>
                 )}
 
-               
                 {userType === "empresa" && (
                     <Box display="flex" flexDirection="column" gap={2} width="400px">
-                        <TextField fullWidth label="Nome" variant="outlined" />
-                        <TextField fullWidth label="Senha" type="password" variant="outlined" />
-                        <TextField fullWidth label="CNPJ" variant="outlined" />
+                        <TextField name="nome" label="Nome" variant="outlined" fullWidth onChange={handleInputChange} />
+                        <TextField name="senha" label="Senha" variant="outlined" fullWidth type="password" onChange={handleInputChange} />
+                        <TextField name="cpfCnpj" label="CNPJ" variant="outlined" fullWidth onChange={handleInputChange} />
 
                         <Button
                             onClick={handleSubmit}
@@ -145,7 +129,7 @@ export const RegisterPage = () => {
                                 backgroundColor: '#191970',
                                 color: '#fff',
                                 '&:hover': {
-                                    backgroundColor: '#1e1e78', 
+                                    backgroundColor: '#1e1e78',
                                 },
                             }}
                         >

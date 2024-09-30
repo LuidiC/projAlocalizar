@@ -1,16 +1,34 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios"; // Importando axios para fazer requisições HTTP
 
 export const LoginPage = () => {
     const [userType, setUserType] = useState("cliente");
+    const [cpfCnpj, setCpfCnpj] = useState("");
+    const [senha, setSenha] = useState("");
     const navigate = useNavigate();
 
-    const doLogin = () => {
-        if (userType === "cliente") {
-            navigate("/homeclient");
-        } else {
-            navigate("/homecompanies");
+    // Função para enviar os dados de login
+    const doLogin = async () => {
+        try {
+            // Faz a requisição para o endpoint de login
+            const response = await axios.get("http://localhost:8080/api/usuario/login", {
+                params: {
+                    cpf: cpfCnpj,
+                    senha: senha,
+                },
+            });
+
+            const usuario = response.data;
+
+            if (userType === "cliente") {
+                navigate("/homeclient", { state: { usuario } });
+            } else {
+                navigate("/homecompanies", { state: { usuario } });
+            }
+        } catch (error) {
+            console.error("Erro no login:", error);
         }
     };
 
@@ -28,7 +46,7 @@ export const LoginPage = () => {
             <Box
                 sx={{
                     width: '60%',
-                    backgroundColor: '#191970', 
+                    backgroundColor: '#191970',
                     minHeight: '110vh',
                     marginTop: '-100px',
                     marginLeft: '-15%',
@@ -36,7 +54,6 @@ export const LoginPage = () => {
                     padding: '20px'
                 }}
             >
-                
             </Box>
 
             <Box
@@ -55,7 +72,6 @@ export const LoginPage = () => {
                     Login
                 </Typography>
 
-               
                 <Box display="flex" justifyContent="space-between" width="100%">
                     <Button
                         onClick={() => setUserType("cliente")}
@@ -93,8 +109,10 @@ export const LoginPage = () => {
 
                 <TextField
                     fullWidth
-                    label="Nome"
+                    label="CPF/CNPJ"
                     variant="outlined"
+                    value={cpfCnpj}
+                    onChange={(e) => setCpfCnpj(e.target.value)}
                     sx={{
                         input: { color: '#191970' },
                         '.MuiOutlinedInput-root': {
@@ -115,6 +133,8 @@ export const LoginPage = () => {
                     label="Senha"
                     type="password"
                     variant="outlined"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
                     sx={{
                         input: { color: '#191970' },
                         '.MuiOutlinedInput-root': {
