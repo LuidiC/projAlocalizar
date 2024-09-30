@@ -2,6 +2,7 @@ package com.pucminas.backprojetoestacionamento.core.automovel;
 
 import com.pucminas.backprojetoestacionamento.dataprovider.automovel.IAutomovelRepository;
 import com.pucminas.backprojetoestacionamento.model.Automovel;
+import com.pucminas.backprojetoestacionamento.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,10 @@ public class AutomovelService {
 
     public Automovel salvar(Automovel automovel) {
         return automovelRepository.save(automovel);
+    }
+
+    public List<Automovel> listarPorProprietario(Usuario usuario) {
+        return automovelRepository.findAutomovelByProprietario(usuario);
     }
 
     public Automovel buscar(String placa) {

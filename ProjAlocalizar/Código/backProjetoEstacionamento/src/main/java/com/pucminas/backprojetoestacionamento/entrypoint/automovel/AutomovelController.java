@@ -3,6 +3,7 @@ package com.pucminas.backprojetoestacionamento.entrypoint.automovel;
 import com.pucminas.backprojetoestacionamento.core.automovel.AutomovelService;
 import com.pucminas.backprojetoestacionamento.core.usuario.UsuarioService;
 import com.pucminas.backprojetoestacionamento.model.Automovel;
+import com.pucminas.backprojetoestacionamento.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,12 @@ public class AutomovelController {
     @GetMapping("/buscar")
     public ResponseEntity<Automovel> buscar(@RequestParam String placa) {
         Automovel automovel = automovelService.buscar(placa);
+        return automovel != null ? ResponseEntity.ok(automovel) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/buscarPorProprietario")
+    public ResponseEntity<List<Automovel>> buscarPorProprietario(@RequestParam Usuario placa) {
+        List<Automovel> automovel = automovelService.listarPorProprietario(placa);
         return automovel != null ? ResponseEntity.ok(automovel) : ResponseEntity.notFound().build();
     }
 

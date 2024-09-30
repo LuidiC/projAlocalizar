@@ -7,7 +7,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
-@Entity(name = "automovel")
+@Entity(name = "automoveis")
 public class Automovel {
     @Id
     String placa;
