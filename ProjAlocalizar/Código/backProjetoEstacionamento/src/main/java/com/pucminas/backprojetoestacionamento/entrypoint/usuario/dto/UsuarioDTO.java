@@ -1,6 +1,6 @@
 package com.pucminas.backprojetoestacionamento.entrypoint.usuario.dto;
 
-import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
+import com.pucminas.backprojetoestacionamento.common.enums.TipoUsuario;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

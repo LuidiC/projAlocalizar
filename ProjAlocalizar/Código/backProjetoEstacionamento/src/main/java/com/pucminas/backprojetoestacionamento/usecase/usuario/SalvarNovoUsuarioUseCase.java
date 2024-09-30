@@ -16,10 +16,8 @@ public class SalvarNovoUsuarioUseCase {
     @Autowired
     Mapper mapper;
 
-    public UsuarioDTO salvarNovoUsuario(Usuario usuario) {
-        Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario);
-        return mapper.generalMapper(usuarioSalvo,
-                UsuarioDTO.class);
+    public Usuario salvarNovoUsuario(Usuario usuario) {
+        return usuarioService.salvarUsuario(usuario);
     }
 
 }

@@ -16,9 +16,9 @@
             return usuarioRepository.save(usuario);
         }
 
-        public Usuario deletarUsuario(String matricula) {
-            if(usuarioRepository.findById(matricula).isPresent()) {
-                Usuario usuario = usuarioRepository.findById(matricula).get();
+        public Usuario deletarUsuario(String cpf) {
+            if(usuarioRepository.findUsuarioByCpfCnpj(cpf) != null) {
+                Usuario usuario = usuarioRepository.findUsuarioByCpfCnpj(cpf);
                 usuario.setAtivo(false);
                 usuarioRepository.save(usuario);
 
@@ -44,10 +44,10 @@
 //            return null;
 //        }
 
-        public Usuario login(String matricula, String Senha) {
-            if(usuarioRepository.findById(matricula).isPresent()) {
-                if(usuarioRepository.findById(matricula).get().getSenha().equals(Senha)) {
-                    return usuarioRepository.findById(matricula).get();
+        public Usuario login(String cpf, String Senha) {
+            if(usuarioRepository.findUsuarioByCpfCnpj(cpf) != null) {
+                if(usuarioRepository.findUsuarioByCpfCnpj(cpf).getSenha().equals(Senha)) {
+                    return usuarioRepository.findUsuarioByCpfCnpj(cpf);
                 }
             }
             return null;
