@@ -2,17 +2,19 @@ import { Box, Button, Typography, Dialog, DialogActions, DialogContent, DialogTi
 import { DirectionsCar, Lightbulb } from "@mui/icons-material"; 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
+import axios from "axios"; // Importando axios para fazer requisições
+import { user } from "../shared/services/User";
 
 export const HomeCompanies = () => {
     const navigate = useNavigate(); 
     const [open, setOpen] = useState(false);
     const [vehicleData, setVehicleData] = useState({
-        matricula: '',
-        ano: '',
-        marca: '',
-        modelo: '',
         placa: '',
-        nomeEmpresaBanco: '',
+        modelo: '',
+        marca: '',
+        ano: 0, 
+        disponivel: true,
+        proprietario: user
     });
 
     const handleNewVehicle = () => {
@@ -25,19 +27,37 @@ export const HomeCompanies = () => {
 
     const handleClose = () => {
         setOpen(false);
+        setVehicleData({
+            placa: '',
+            modelo: '',
+            marca: '',
+            ano: 0,
+            disponivel: true,
+            proprietario: user, // Resetando também o ID do proprietário
+        });
     };
 
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
+
+        // Se o campo for ano, convertemos para número
+        const updatedValue = name === 'ano' ? Number(value) : value;
+
         setVehicleData(prevState => ({
             ...prevState,
-            [name]: value,
+            [name]: updatedValue,
         }));
     };
 
-    const handleSubmit = () => {
-        console.log("Dados do veículo:", vehicleData);
-        handleClose();
+    const handleSubmit = async () => {
+        try {
+            const response = await axios.post("http://localhost:8080/api/automovel", vehicleData);
+            console.log("Veículo cadastrado com sucesso:", response.data);
+            handleClose();
+        } catch (error) {
+            console.error("Erro ao cadastrar veículo:", error);
+            alert("Erro ao cadastrar veículo. Tente novamente.");
+        }
     };
 
     return (
@@ -107,12 +127,12 @@ export const HomeCompanies = () => {
                     <TextField
                         autoFocus
                         margin="dense"
-                        name="matricula"
-                        label="Matrícula"
+                        name="placa"
+                        label="Placa"
                         type="text"
                         fullWidth
                         variant="outlined"
-                        value={vehicleData.matricula}
+                        value={vehicleData.placa}
                         onChange={handleChange}
                         InputProps={{ style: { color: '#191970' } }} 
                     />
@@ -120,7 +140,7 @@ export const HomeCompanies = () => {
                         margin="dense"
                         name="ano"
                         label="Ano"
-                        type="text"
+                        type="number" // Alterando para tipo number
                         fullWidth
                         variant="outlined"
                         value={vehicleData.ano}
@@ -146,28 +166,6 @@ export const HomeCompanies = () => {
                         fullWidth
                         variant="outlined"
                         value={vehicleData.modelo}
-                        onChange={handleChange}
-                        InputProps={{ style: { color: '#191970' } }} 
-                    />
-                    <TextField
-                        margin="dense"
-                        name="placa"
-                        label="Placa"
-                        type="text"
-                        fullWidth
-                        variant="outlined"
-                        value={vehicleData.placa}
-                        onChange={handleChange}
-                        InputProps={{ style: { color: '#191970' } }} 
-                    />
-                    <TextField
-                        margin="dense"
-                        name="nomeEmpresaBanco"
-                        label="Nome da Empresa/Banco"
-                        type="text"
-                        fullWidth
-                        variant="outlined"
-                        value={vehicleData.nomeEmpresaBanco}
                         onChange={handleChange}
                         InputProps={{ style: { color: '#191970' } }} 
                     />

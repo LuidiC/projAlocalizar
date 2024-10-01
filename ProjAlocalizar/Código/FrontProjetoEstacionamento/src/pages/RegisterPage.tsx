@@ -1,8 +1,8 @@
 import { Box, Button, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios"; // Importa axios
-import { SelectChangeEvent } from "@mui/material"; // Importa o tipo correto
+import axios from "axios";
+import { SelectChangeEvent } from "@mui/material";
 
 export const RegisterPage = () => {
     const [userType, setUserType] = useState("cliente");
@@ -12,17 +12,48 @@ export const RegisterPage = () => {
         senha: "",
         endereco: "",
         profissao: "",
-        tipoUsuario: "CLIENTE" // Inicialmente setado para 'CLIENTE'
+        tipoUsuario: "CLIENTE"
     });
 
     const navigate = useNavigate();
 
+    const maskCpfCnpj = (value: string) => {
+        // Remove caracteres não numéricos
+        const cleanValue = value.replace(/\D/g, '');
+
+        if (userType === "cliente") {
+            // Máscara de CPF
+            return cleanValue.length <= 11
+                ? cleanValue.replace(/(\d{3})(\d)/, '$1.$2')
+                          .replace(/(\d{3})(\d)/, '$1.$2')
+                          .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+                : cleanValue.substring(0, 11); // Limita a 11 dígitos
+        } else {
+            // Máscara de CNPJ
+            return cleanValue.length <= 14
+                ? cleanValue.replace(/(\d{2})(\d)/, '$1.$2')
+                          .replace(/(\d{3})(\d)/, '$1.$2')
+                          .replace(/(\d{3})(\d{1,2})$/, '$1/$2')
+                          .replace(/(\d{4})(\d)$/, '$1-$2')
+                : cleanValue.substring(0, 14); // Limita a 14 dígitos
+        }
+    };
+
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+
+        if (name === "cpfCnpj") {
+            const maskedValue = maskCpfCnpj(value);
+            setFormData({
+                ...formData,
+                [name]: maskedValue
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value
+            });
+        }
     };
 
     const handleUserTypeChange = (event: SelectChangeEvent<string>) => {
@@ -30,14 +61,20 @@ export const RegisterPage = () => {
         setUserType(userType);
         setFormData({
             ...formData,
-            tipoUsuario: userType.toUpperCase() // Atualiza tipo de usuário
+            tipoUsuario: userType.toUpperCase(),
+            cpfCnpj: "" // Resetar o CPF/CNPJ ao trocar o tipo de usuário
         });
     };
 
     const handleSubmit = async () => {
         try {
-            // Fazendo a requisição para a API para salvar o usuário
-            const response = await axios.post("http://localhost:8080/api/usuario/novoUsuario", formData);
+            const cleanCpfCnpj = formData.cpfCnpj.replace(/\D/g, ''); // Remove a máscara
+            const dataToSubmit = {
+                ...formData,
+                cpfCnpj: cleanCpfCnpj // Usar o CPF/CNPJ limpo
+            };
+
+            const response = await axios.post("http://localhost:8080/api/usuario/novoUsuario", dataToSubmit);
             console.log("Usuário cadastrado com sucesso:", response.data);
             navigate("/login");
         } catch (error) {
@@ -95,7 +132,14 @@ export const RegisterPage = () => {
                         <TextField name="nome" label="Nome" variant="outlined" fullWidth onChange={handleInputChange} />
                         <TextField name="endereco" label="Endereço" variant="outlined" fullWidth onChange={handleInputChange} />
                         <TextField name="profissao" label="Profissão" variant="outlined" fullWidth onChange={handleInputChange} />
-                        <TextField name="cpfCnpj" label="CPF" variant="outlined" fullWidth onChange={handleInputChange} />
+                        <TextField 
+                            name="cpfCnpj" 
+                            label="CPF" 
+                            variant="outlined" 
+                            fullWidth 
+                            onChange={handleInputChange} 
+                            inputProps={{ maxLength: 14 }} // Limite de caracteres
+                        />
                         <TextField name="senha" label="Senha" variant="outlined" fullWidth type="password" onChange={handleInputChange} />
 
                         <Button
@@ -119,7 +163,14 @@ export const RegisterPage = () => {
                     <Box display="flex" flexDirection="column" gap={2} width="400px">
                         <TextField name="nome" label="Nome" variant="outlined" fullWidth onChange={handleInputChange} />
                         <TextField name="senha" label="Senha" variant="outlined" fullWidth type="password" onChange={handleInputChange} />
-                        <TextField name="cpfCnpj" label="CNPJ" variant="outlined" fullWidth onChange={handleInputChange} />
+                        <TextField 
+                            name="cpfCnpj" 
+                            label="CNPJ" 
+                            variant="outlined" 
+                            fullWidth 
+                            onChange={handleInputChange} 
+                            inputProps={{ maxLength: 18 }} // Limite de caracteres
+                        />
 
                         <Button
                             onClick={handleSubmit}

@@ -3,15 +3,18 @@ import { Card } from 'primereact/card';
 import { Summarize, DirectionsCar } from "@mui/icons-material"; 
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom"; 
+import { Usuario } from "./LoginPage";
+import { user } from "../shared/services/User";
 
-export const HomePage = ({ usuario }: { usuario?: any }) => {
+
+export const HomePage = () => {
     const [hoveredCard, setHoveredCard] = useState<string | null>(null);
     const navigate = useNavigate(); 
 
     const headerMeusAlugueis = (
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <Summarize style={{ color: "#191970", fontSize: '5rem' }} /> 
-            <Typography style={{ marginLeft: '5px', fontSize: '20px', color: "#191970" }}>Aluguéis de {usuario.nome}</Typography> 
+            <Typography style={{ marginLeft: '5px', fontSize: '20px', color: "#191970" }}>Aluguéis de {user.nome}</Typography> 
         </div>
     );
 
@@ -23,11 +26,11 @@ export const HomePage = ({ usuario }: { usuario?: any }) => {
     );
 
     const handleNavigateToMyCars = () => {
-        navigate('/mycars', { state: { usuario } }); // Passa o usuario para a tela de Meus Aluguéis
+        navigate('/mycars');
     };
 
     const handleNavigateToRent = () => {
-        navigate('/rent', { state: { usuario } }); // Passa o usuario para a tela de Alugar Carros
+        navigate('/rent');
     };
 
     return (
