@@ -1,10 +1,12 @@
-import { Box, Button, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, MenuItem, Select, Snackbar, SnackbarCloseReason, TextField, Typography, IconButton } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material"; // Importando o ícone de seta
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { SelectChangeEvent } from "@mui/material";
 
 export const RegisterPage = () => {
+    const [open, setOpen] = useState(false);
     const [userType, setUserType] = useState("cliente");
     const [formData, setFormData] = useState({
         nome: "",
@@ -18,24 +20,21 @@ export const RegisterPage = () => {
     const navigate = useNavigate();
 
     const maskCpfCnpj = (value: string) => {
-        // Remove caracteres não numéricos
         const cleanValue = value.replace(/\D/g, '');
 
         if (userType === "cliente") {
-            // Máscara de CPF
             return cleanValue.length <= 11
                 ? cleanValue.replace(/(\d{3})(\d)/, '$1.$2')
-                          .replace(/(\d{3})(\d)/, '$1.$2')
-                          .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
-                : cleanValue.substring(0, 11); // Limita a 11 dígitos
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+                : cleanValue.substring(0, 11);
         } else {
-            // Máscara de CNPJ
             return cleanValue.length <= 14
                 ? cleanValue.replace(/(\d{2})(\d)/, '$1.$2')
-                          .replace(/(\d{3})(\d)/, '$1.$2')
-                          .replace(/(\d{3})(\d{1,2})$/, '$1/$2')
-                          .replace(/(\d{4})(\d)$/, '$1-$2')
-                : cleanValue.substring(0, 14); // Limita a 14 dígitos
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d{1,2})$/, '$1/$2')
+                    .replace(/(\d{4})(\d)$/, '$1-$2')
+                : cleanValue.substring(0, 14);
         }
     };
 
@@ -56,39 +55,40 @@ export const RegisterPage = () => {
         }
     };
 
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
+        if (reason === 'clickaway') return;
+        setOpen(false);
+    };
+
     const handleUserTypeChange = (event: SelectChangeEvent<string>) => {
         const userType = event.target.value;
         setUserType(userType);
         setFormData({
             ...formData,
             tipoUsuario: userType.toUpperCase(),
-            cpfCnpj: "" // Resetar o CPF/CNPJ ao trocar o tipo de usuário
+            cpfCnpj: ""
         });
     };
 
     const handleSubmit = async () => {
         try {
-            const cleanCpfCnpj = formData.cpfCnpj.replace(/\D/g, ''); // Remove a máscara
+            const cleanCpfCnpj = formData.cpfCnpj.replace(/\D/g, '');
             const dataToSubmit = {
                 ...formData,
-                cpfCnpj: cleanCpfCnpj // Usar o CPF/CNPJ limpo
+                cpfCnpj: cleanCpfCnpj
             };
-
             const response = await axios.post("http://localhost:8080/api/usuario/novoUsuario", dataToSubmit);
-            console.log("Usuário cadastrado com sucesso:", response.data);
-            navigate("/login");
+            if (response.status === 200) {
+                setOpen(true);
+                // navigate("/login");
+            }
         } catch (error) {
             console.error("Erro ao cadastrar usuário:", error);
         }
     };
 
     return (
-        <Box
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            sx={{ minHeight: '100vh' }}
-        >
+        <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"} sx={{ minHeight: '100vh' }}>
             <Box
                 sx={{
                     width: '60%',
@@ -97,9 +97,25 @@ export const RegisterPage = () => {
                     marginTop: '-100px',
                     marginLeft: '-15%',
                     borderRadius: '8px',
-                    padding: '20px'
+                    padding: '20px',
+                    position: 'relative' // Adicionado para posicionar o botão corretamente
                 }}
             >
+                <IconButton
+                    onClick={() => navigate("/login")} // Navega para a tela de login
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        backgroundColor: 'transparent', // Para deixar apenas a seta visível
+                        '&:hover': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)', // Efeito ao passar o mouse
+                        },
+                    }}
+                >
+                    <ArrowBack sx={{ color: '#fff', fontSize: 60 }} /> {/* Seta branca grande */}
+                </IconButton>
             </Box>
 
             <Box
@@ -132,12 +148,12 @@ export const RegisterPage = () => {
                         <TextField name="nome" label="Nome" variant="outlined" fullWidth onChange={handleInputChange} />
                         <TextField name="endereco" label="Endereço" variant="outlined" fullWidth onChange={handleInputChange} />
                         <TextField name="profissao" label="Profissão" variant="outlined" fullWidth onChange={handleInputChange} />
-                        <TextField 
-                            name="cpfCnpj" 
-                            label="CPF" 
-                            variant="outlined" 
-                            fullWidth 
-                            onChange={handleInputChange} 
+                        <TextField
+                            name="cpfCnpj"
+                            label="CPF"
+                            variant="outlined"
+                            fullWidth
+                            onChange={handleInputChange}
                             inputProps={{ maxLength: 14 }} // Limite de caracteres
                         />
                         <TextField name="senha" label="Senha" variant="outlined" fullWidth type="password" onChange={handleInputChange} />
@@ -163,12 +179,12 @@ export const RegisterPage = () => {
                     <Box display="flex" flexDirection="column" gap={2} width="400px">
                         <TextField name="nome" label="Nome" variant="outlined" fullWidth onChange={handleInputChange} />
                         <TextField name="senha" label="Senha" variant="outlined" fullWidth type="password" onChange={handleInputChange} />
-                        <TextField 
-                            name="cpfCnpj" 
-                            label="CNPJ" 
-                            variant="outlined" 
-                            fullWidth 
-                            onChange={handleInputChange} 
+                        <TextField
+                            name="cpfCnpj"
+                            label="CNPJ"
+                            variant="outlined"
+                            fullWidth
+                            onChange={handleInputChange}
                             inputProps={{ maxLength: 18 }} // Limite de caracteres
                         />
 
@@ -189,6 +205,18 @@ export const RegisterPage = () => {
                     </Box>
                 )}
             </Box>
+            <div>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert
+                        onClose={handleClose}
+                        severity="success"
+                        variant="filled"
+                        sx={{ width: '100%' }}
+                    >
+                        Cadastrado com sucesso!
+                    </Alert>
+                </Snackbar>
+            </div>
         </Box>
     );
 };

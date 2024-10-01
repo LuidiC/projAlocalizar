@@ -3,6 +3,26 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { setUser } from "../shared/services/User";
+import { keyframes } from '@mui/system';
+
+// Animações
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+`;
+
+const slideIn = keyframes`
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+`;
 
 export interface Usuario {
     id?: number;
@@ -22,24 +42,21 @@ export const LoginPage = () => {
     const navigate = useNavigate();
 
     const maskCpfCnpj = (value: string) => {
-        // Remove caracteres não numéricos
         const cleanValue = value.replace(/\D/g, '');
         
         if (userType === "cliente") {
-            // Máscara de CPF
             return cleanValue.length <= 11
                 ? cleanValue.replace(/(\d{3})(\d)/, '$1.$2')
                           .replace(/(\d{3})(\d)/, '$1.$2')
                           .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
-                : cleanValue.substring(0, 11); // Limita a 11 dígitos
+                : cleanValue.substring(0, 11);
         } else {
-            // Máscara de CNPJ
             return cleanValue.length <= 14
                 ? cleanValue.replace(/(\d{2})(\d)/, '$1.$2')
                           .replace(/(\d{3})(\d)/, '$1.$2')
                           .replace(/(\d{3})(\d{1,2})$/, '$1/$2')
                           .replace(/(\d{4})(\d)$/, '$1-$2')
-                : cleanValue.substring(0, 14); // Limita a 14 dígitos
+                : cleanValue.substring(0, 14);
         }
     };
 
@@ -52,7 +69,7 @@ export const LoginPage = () => {
         try {
             const response = await axios.get("http://localhost:8080/api/usuario/login", {
                 params: {
-                    cpf: cpfCnpj.replace(/\D/g, ''), // Remove a máscara ao enviar
+                    cpf: cpfCnpj.replace(/\D/g, ''),
                     senha: senha,
                 },
             });
@@ -82,8 +99,24 @@ export const LoginPage = () => {
                 marginTop: '-100px',
                 marginLeft: '-15%',
                 borderRadius: '8px',
-                padding: '20px'
-            }} />
+                padding: '20px',
+                animation: `${fadeIn} 1s ease-in`,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <Typography variant="h2" sx={{
+                    color: '#fff',
+                    marginBottom: 4,
+                    animation: `${slideIn} 1s ease-in`,
+                    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                }}>
+                    Localizar
+                </Typography>
+            </Box>
             <Box sx={{
                 flexDirection: 'column',
                 display: 'flex',
@@ -93,6 +126,7 @@ export const LoginPage = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: '-50px',
+                animation: `${fadeIn} 1.5s ease-in`,
             }}>
                 <Typography variant="h4" sx={{ marginBottom: 2, color: '#191970' }}>
                     Login
@@ -105,7 +139,8 @@ export const LoginPage = () => {
                             backgroundColor: userType === "cliente" ? '#191970' : 'transparent',
                             color: userType === "cliente" ? '#fff' : '#191970',
                             borderColor: '#191970',
-                            '&:hover': { backgroundColor: userType === "cliente" ? '#191970' : 'rgba(25, 25, 112, 0.04)' },
+                            transition: 'background-color 0.3s, color 0.3s',
+                            '&:hover': { backgroundColor: userType === "cliente" ? '#191970' : 'rgba(25, 25, 112, 0.04)', color: '#fff' },
                         }}>
                         Cliente
                     </Button>
@@ -116,7 +151,8 @@ export const LoginPage = () => {
                             backgroundColor: userType === "empresa" ? '#191970' : 'transparent',
                             color: userType === "empresa" ? '#fff' : '#191970',
                             borderColor: '#191970',
-                            '&:hover': { backgroundColor: userType === "empresa" ? '#191970' : 'rgba(25, 25, 112, 0.04)' },
+                            transition: 'background-color 0.3s, color 0.3s',
+                            '&:hover': { backgroundColor: userType === "empresa" ? '#191970' : 'rgba(25, 25, 112, 0.04)', color: '#fff' },
                         }}>
                         Empresa/Banco
                     </Button>
@@ -128,7 +164,7 @@ export const LoginPage = () => {
                     value={cpfCnpj}
                     onChange={handleChangeCpfCnpj}
                     inputProps={{
-                        maxLength: userType === "cliente" ? 14 : 18, // Limite de caracteres
+                        maxLength: userType === "cliente" ? 14 : 18,
                     }}
                     sx={{
                         input: { color: '#191970' },
@@ -161,6 +197,7 @@ export const LoginPage = () => {
                         color: '#191970',
                         borderColor: '#191970',
                         '&:hover': { borderColor: '#191970', backgroundColor: 'rgba(25, 25, 112, 0.04)' },
+                        transition: 'background-color 0.3s',
                     }}>
                     Login
                 </Button>
@@ -170,6 +207,7 @@ export const LoginPage = () => {
                         color: '#191970',
                         borderColor: '#191970',
                         '&:hover': { borderColor: '#191970', backgroundColor: 'rgba(25, 25, 112, 0.04)' },
+                        transition: 'background-color 0.3s',
                     }}>
                     Cadastro
                 </Button>
