@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1 align="center">🚗 Projeto de Aluguel de Carros 🚗</h1>
+<h1 align="center">🚗 Projeto de Aluguel de Veículos 🚗</h1>
 
 <img src="Imagens/localizar_azul.png" width="500">
 
@@ -8,7 +8,7 @@
 
 </div>
 
-## Apresentação
+## Apresentação ✨✨✨
 
 Preview de algumas das telas do nosso sistema! 🏃
 
@@ -34,7 +34,7 @@ Preview de algumas das telas do nosso sistema! 🏃
 * Lúcio Alves
 * Luidi Cadete Silva 
 
-## Professor
+## Professor 🫡
 
 * João Paulo Carneiro Aramuni
 
