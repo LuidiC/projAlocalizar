@@ -8,6 +8,25 @@
 
 </div>
 
+## Apresentação
+
+Preview de algumas das telas do nosso sistema! 🏃
+
+1. **Tela de Login**  
+   ![Tela de Login](Imagens/telas/login.jpeg)  
+
+2. **Home**  
+   ![Home](Imagens/telas/home_cliente.jpeg)  
+
+3. **Lista de Veículos**  
+   ![Tela de Reservas](Imagens/telas/lista_disponiveis.jpeg)  
+
+4. **Meus Aluguéis**  
+   ![Aluguéis](Imagens/telas/meus_alugueis.jpeg)  
+
+5. **Meus Pedidos**  
+   ![Pedidos](Imagens/telas/pedidios_aluguel.jpeg)  
+
 ## Integrantes
 
 * Juliana Parreiras
