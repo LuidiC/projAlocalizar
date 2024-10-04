@@ -91,11 +91,11 @@ Certifique-se de ter os seguintes programas instalados:
 3. **Configurar o Frontend**:
    - Navegue até a pasta `Front/` e instale as dependências do projeto:
      ```bash
-     npm install
+     Yarn install
      ```
    - Execute o frontend:
      ```bash
-     npm start
+     Yarn start
      ```
    - O frontend estará acessível no navegador através de `http://localhost:3000`.
 
