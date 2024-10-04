@@ -1,9 +1,20 @@
 import { Alert, Box, Button, MenuItem, Select, Snackbar, SnackbarCloseReason, TextField, Typography, IconButton } from "@mui/material";
-import { ArrowBack } from "@mui/icons-material"; // Importando o ícone de seta
+import { ArrowBack } from "@mui/icons-material"; // Ícone de seta
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { SelectChangeEvent } from "@mui/material";
+import { keyframes } from '@mui/system';
+
+
+const slideIn = keyframes`
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+`;
 
 export const RegisterPage = () => {
     const [open, setOpen] = useState(false);
@@ -80,7 +91,6 @@ export const RegisterPage = () => {
             const response = await axios.post("http://localhost:8080/api/usuario/novoUsuario", dataToSubmit);
             if (response.status === 200) {
                 setOpen(true);
-                // navigate("/login");
             }
         } catch (error) {
             console.error("Erro ao cadastrar usuário:", error);
@@ -88,33 +98,35 @@ export const RegisterPage = () => {
     };
 
     return (
-        <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"} sx={{ minHeight: '100vh' }}>
+        <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
             <Box
                 sx={{
                     width: '60%',
                     backgroundColor: '#191970',
-                    minHeight: '110vh',
+                    minHeight: '102vh',
                     marginTop: '-100px',
                     marginLeft: '-15%',
                     borderRadius: '8px',
-                    padding: '20px',
-                    position: 'relative' // Adicionado para posicionar o botão corretamente
+                    position: 'relative',
+                    animation: `${slideIn} 0.5s ease-in-out`, // Aplica as animações de fade-in e slide-in
                 }}
             >
                 <IconButton
-                    onClick={() => navigate("/login")} // Navega para a tela de login
+                    onClick={() => navigate("/login")}
                     sx={{
                         position: 'absolute',
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        backgroundColor: 'transparent', // Para deixar apenas a seta visível
+                        backgroundColor: 'transparent',
+                        transition: 'transform 0.3s ease-in-out',
                         '&:hover': {
-                            backgroundColor: 'rgba(255, 255, 255, 0.1)', // Efeito ao passar o mouse
-                        },
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            transform: 'translate(-50%, -50%) scale(1.2)', // Efeito de hover
+                        }
                     }}
                 >
-                    <ArrowBack sx={{ color: '#fff', fontSize: 60 }} /> {/* Seta branca grande */}
+                    <ArrowBack sx={{ color: '#fff', fontSize: 60 }} />
                 </IconButton>
             </Box>
 
@@ -128,6 +140,7 @@ export const RegisterPage = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: '-50px',
+                    animation: `${slideIn} 0.5s ease-in-out`, // Animação de fade-in e slide-in
                 }}
             >
                 <Typography variant="h4" sx={{ marginBottom: 2 }}>
@@ -144,7 +157,7 @@ export const RegisterPage = () => {
                 </Select>
 
                 {userType === "cliente" && (
-                    <Box display="flex" flexDirection="column" gap={2} width="400px">
+                    <Box display="flex" flexDirection="column" gap={1} width="400px" sx={{ paddingTop: 0 }}>
                         <TextField name="nome" label="Nome" variant="outlined" fullWidth onChange={handleInputChange} />
                         <TextField name="endereco" label="Endereço" variant="outlined" fullWidth onChange={handleInputChange} />
                         <TextField name="profissao" label="Profissão" variant="outlined" fullWidth onChange={handleInputChange} />
@@ -154,7 +167,7 @@ export const RegisterPage = () => {
                             variant="outlined"
                             fullWidth
                             onChange={handleInputChange}
-                            inputProps={{ maxLength: 14 }} // Limite de caracteres
+                            inputProps={{ maxLength: 14 }}
                         />
                         <TextField name="senha" label="Senha" variant="outlined" fullWidth type="password" onChange={handleInputChange} />
 
@@ -167,7 +180,7 @@ export const RegisterPage = () => {
                                 color: '#fff',
                                 '&:hover': {
                                     backgroundColor: '#1e1e78',
-                                },
+                                }// Animação de fade-in no botão
                             }}
                         >
                             Cadastrar Cliente
@@ -185,7 +198,7 @@ export const RegisterPage = () => {
                             variant="outlined"
                             fullWidth
                             onChange={handleInputChange}
-                            inputProps={{ maxLength: 18 }} // Limite de caracteres
+                            inputProps={{ maxLength: 18 }}
                         />
 
                         <Button
@@ -197,7 +210,7 @@ export const RegisterPage = () => {
                                 color: '#fff',
                                 '&:hover': {
                                     backgroundColor: '#1e1e78',
-                                },
+                                }
                             }}
                         >
                             Cadastrar Empresa/Banco

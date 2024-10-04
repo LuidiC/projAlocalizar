@@ -7,7 +7,6 @@ import { Car, Aluguel } from './MyCarsPage';
 import { user } from '../shared/services/User';
 
 const RentPage: React.FC = () => {
-  const [vehicles, setVehicles] = useState<Car[]>([]);
 
   useEffect(() => {
     const fetchVehicles = async () => {

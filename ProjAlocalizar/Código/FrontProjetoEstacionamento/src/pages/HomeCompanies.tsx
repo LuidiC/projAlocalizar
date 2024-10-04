@@ -66,10 +66,10 @@ export const HomeCompanies = () => {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            sx={{ minHeight: '100vh', padding: 3, backgroundColor: '#f5f5f5' }}
+            sx={{ minHeight: 'calc(80vh - 64px)', padding: 3}}
         >
-            <Typography variant="h4" sx={{ marginBottom: 4 }}>
-                Bem-vindo à Home Empresas/Bancos
+            <Typography variant="h4" color="#191970" sx={{ marginBottom: 4 }}>
+                Bem-vindo {user.nome} !
             </Typography>
 
             <Box display="flex" gap={3}>
@@ -179,6 +179,23 @@ export const HomeCompanies = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <Box
+                component="footer"
+                sx={{
+                    position: 'fixed',
+                    bottom: -1,
+                    marginTop: 'auto',
+                    padding: '20px',
+                    backgroundColor: '#191970',
+                    color: '#fff',
+                    minWidth: '204vh',
+                    textAlign: 'center',
+                }}
+            >
+                <Typography variant="body1">
+                    Sistema de Aluguel de Veículos © 2024
+                </Typography>
+            </Box>
         </Box>
     );
 };

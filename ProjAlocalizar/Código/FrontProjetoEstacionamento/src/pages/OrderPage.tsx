@@ -139,7 +139,7 @@ const OrderPage: React.FC = () => {
         )}
       </List>
       {/* Paginação */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px',position: 'fixed', bottom: 20, right: 20 }}>
         <Pagination
           count={Math.ceil(alugueis.length / rowsPerPage)}
           page={page}
