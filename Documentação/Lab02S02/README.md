@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Este documento faz parte da **Sprint 02** do projeto de Aluguel de Carros. Abaixo, você encontrará o diagrama de casos de uso do projeto.
+Este documento faz parte da **Sprint 02** do projeto de Aluguel de Carros. Abaixo, você encontrará o diagrama de componentes do projeto.
 
 ## 📝 Diagrama de Componentes do Sistema
 
