@@ -43,19 +43,19 @@ export const LoginPage = () => {
 
     const maskCpfCnpj = (value: string) => {
         const cleanValue = value.replace(/\D/g, '');
-        
+
         if (userType === "cliente") {
             return cleanValue.length <= 11
                 ? cleanValue.replace(/(\d{3})(\d)/, '$1.$2')
-                          .replace(/(\d{3})(\d)/, '$1.$2')
-                          .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
                 : cleanValue.substring(0, 11);
         } else {
             return cleanValue.length <= 14
                 ? cleanValue.replace(/(\d{2})(\d)/, '$1.$2')
-                          .replace(/(\d{3})(\d)/, '$1.$2')
-                          .replace(/(\d{3})(\d{1,2})$/, '$1/$2')
-                          .replace(/(\d{4})(\d)$/, '$1-$2')
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d{1,2})$/, '$1/$2')
+                    .replace(/(\d{4})(\d)$/, '$1-$2')
                 : cleanValue.substring(0, 14);
         }
     };
@@ -95,8 +95,12 @@ export const LoginPage = () => {
             <Box sx={{
                 width: '60%',
                 backgroundColor: '#191970',
+                backgroundImage: 'url("/foto.png")', // Caminho para a imagem
+                backgroundSize: '60%', // Ajuste o tamanho da imagem
+                backgroundRepeat: 'no-repeat', // Evitar duplicação da imagem
+                backgroundPosition: '70%', // Centraliza a imagem
                 minHeight: '97vh',
-                marginTop: '-100px',
+                marginTop: '-84px',
                 marginLeft: '-15%',
                 borderRadius: '8px',
                 padding: '20px',
@@ -106,15 +110,20 @@ export const LoginPage = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
             }}>
+
+
                 <Typography variant="h2" sx={{
                     color: '#fff',
-                    marginBottom: 4,
+                    marginBottom: 5,
+                    marginTop: '-55%', 
+                    marginLeft: '20%',
                     animation: `${slideIn} 1s ease-in`,
-                    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                    fontFamily: '"Brittany", "Brittany", "Brittany", Brittany',
                     fontWeight: 'bold',
                     textAlign: 'center',
+                    fontSize: '7rem',
                 }}>
-                    Localizar
+                    Alocalizar
                 </Typography>
             </Box>
             <Box sx={{
