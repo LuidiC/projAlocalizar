@@ -7,7 +7,7 @@ Este documento faz parte da **Sprint 03** do projeto de Aluguel de Carros. Abaix
 ## 📝 Diagrama de Implantação do Sistema
 
 <p align="center">
-  <img src="Documentação/Lab02S03/imagens/diagram_implan_localiza.drawio.pngg" alt="Diagrama de Casos de Uso" width="600">
+  <img src="..Lab02S03/imagens/diagram_implan_localiza.drawio.pngg" alt="Diagrama de Casos de Uso" width="600">
 </p>
 
 
