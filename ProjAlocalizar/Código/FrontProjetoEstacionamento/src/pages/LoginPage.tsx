@@ -65,6 +65,11 @@ export const LoginPage = () => {
         setCpfCnpj(maskCpfCnpj(value));
     };
 
+    /** Code review -> Sugestão:Divida o endpoint em parte fixa e os endereços separados ex: const endpoint="http://localhost:8080/"
+    * e consforme for necessario buscar diferentes endeçamento como: api/usuario/login, somente a segunda parte será alterada.
+    * Isso aumenta a flexibilidade e facilita a manutenção do codigo.
+    */
+
     const doLogin = async () => {
         try {
             const response = await axios.get("http://localhost:8080/api/usuario/login", {

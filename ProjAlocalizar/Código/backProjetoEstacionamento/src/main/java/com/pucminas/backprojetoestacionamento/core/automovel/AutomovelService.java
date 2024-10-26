@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/*Code review -> Sugestão: Considere criar uma interface por exemplo "IAutomovelService",
+ * para que sua classe "SalvarNovoUsuarioUseCase" não fique acoplada e mantem o codigo limpo.
+*/
 @Service
 public class AutomovelService {
     @Autowired
@@ -21,6 +24,11 @@ public class AutomovelService {
         return automovelRepository.findAutomovelByProprietario(usuario);
     }
 
+    /*
+     * Code review -> Sugestão: Crie classes para tratamento de excessões ao inves
+     * de retornar null.
+     * Esse tratamento reduz os erros como NullPointerExceptions.
+     */
     public Automovel buscar(String placa) {
         return automovelRepository.findById(placa).orElse(null);
     }
@@ -29,6 +37,11 @@ public class AutomovelService {
         return automovelRepository.findAll();
     }
 
+    /*
+     * Code review -> Sugestão: Crie classes para tratamento de excessões ao inves
+     * de retornar null. Verifique se o usuario é null e caso seja lança uma exceção.
+     * Esse tratamento reduz os erros que podem ocorrer caso o null não seja trado corretamente.
+     */
     public Automovel atualizar(String placa, Automovel automovelAtualizado) {
         Automovel automovelExistente = buscar(placa);
         if (automovelExistente != null) {

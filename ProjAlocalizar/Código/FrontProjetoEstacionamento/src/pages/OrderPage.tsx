@@ -11,7 +11,10 @@ const OrderPage: React.FC = () => {
   const [alugueis, setAlugueis] = useState<Aluguel[]>([]);
   const [page, setPage] = useState(1);
   const rowsPerPage = 2;
-
+/** Code review -> Sugestão:Divida o endpoint em parte fixa e os endereços separados ex: const endpoint="http://localhost:8080/"
+    * e consforme for necessario buscar diferentes endeçamento como: api/automovel/listar, somente a segunda parte será alterada.
+    * Isso aumenta a flexibilidade e facilita a manutenção do codigo.
+    */
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -33,6 +36,10 @@ const OrderPage: React.FC = () => {
     setPage(value);
   };
 
+  /** Code review -> Sugestão:Divida o endpoint em parte fixa e os endereços separados ex: const endpoint="http://localhost:8080/"
+    * e consforme for necessario buscar diferentes endeçamento como: api/automovel/listar, somente a segunda parte será alterada.
+    * Isso aumenta a flexibilidade e facilita a manutenção do codigo.
+    */
   const handleAderir = async (id: number) => {
     try {
       await axios.put("http://localhost:8080/api/aluguel/aderir", null, {
@@ -48,6 +55,10 @@ const OrderPage: React.FC = () => {
     }
   };
 
+  /** Code review -> Sugestão:Divida o endpoint em parte fixa e os endereços separados ex: const endpoint="http://localhost:8080/"
+    * e consforme for necessario buscar diferentes endeçamento como: api/automovel/listar, somente a segunda parte será alterada.
+    * Isso aumenta a flexibilidade e facilita a manutenção do codigo.
+    */
   const handleRecusar = async (id: number) => {
     try {
       await axios.put("http://localhost:8080/api/aluguel/recusar", null, {
