@@ -80,7 +80,10 @@ export const RegisterPage = () => {
             cpfCnpj: ""
         });
     };
-
+/** Code review -> Sugestão:Divida o endpoint em parte fixa e os endereços separados ex: const endpoint="http://localhost:8080/"
+    * e consforme for necessario buscar diferentes endeçamento como: api/automovel/listar, somente a segunda parte será alterada.
+    * Isso aumenta a flexibilidade e facilita a manutenção do codigo.
+    */
     const handleSubmit = async () => {
         try {
             const cleanCpfCnpj = formData.cpfCnpj.replace(/\D/g, '');

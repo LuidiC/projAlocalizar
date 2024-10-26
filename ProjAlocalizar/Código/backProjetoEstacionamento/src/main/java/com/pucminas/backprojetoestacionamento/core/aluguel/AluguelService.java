@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/*Code review -> Sugestão: Considere criar uma interface por exemplo "IAluguelService",
+ * para que sua classe "SalvarNovoUsuarioUseCase" não fique acoplada e mantem o codigo limpo.
+*/
+
 @Service
 public class AluguelService {
 

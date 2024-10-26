@@ -8,6 +8,12 @@ import { user } from '../shared/services/User';
 
 const RentPage: React.FC = () => {
 
+  /** Code review -> Sugestão:Divida o endpoint em parte fixa e os endereços separados ex: const endpoint="http://localhost:8080/"
+    * e consforme for necessario buscar diferentes endeçamento como: api/automovel/listar, somente a segunda parte será alterada.
+    * Isso aumenta a flexibilidade e facilita a manutenção do codigo.
+    * const endpoint = "http://localhost:8080/";
+    * const response = await axios.get<Car[]>(joinUrl(endpoint, "api/automovel/listar"));
+    */
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
@@ -31,6 +37,11 @@ const RentPage: React.FC = () => {
       diasAluguel: 30,
       aderido: 'PENDENTE',
     };
+
+    /** Code review -> Sugestão:Divida o endpoint em parte fixa e os endereços separados ex: const endpoint="http://localhost:8080/"
+    * e consforme for necessario buscar diferentes endeçamento como: api/automovel/listar, somente a segunda parte será alterada.
+    * Isso aumenta a flexibilidade e facilita a manutenção do codigo.
+    */
 
     try {
       const response = await axios.post("http://localhost:8080/api/aluguel", aluguel);
